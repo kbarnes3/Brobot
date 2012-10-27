@@ -3,6 +3,6 @@
 
 struct ILightManager
 {
-    virtual void ShowLights(int strength);
+    virtual void ShowLights(int strength) = 0;
 };
 

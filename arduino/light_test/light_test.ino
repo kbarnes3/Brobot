@@ -2,8 +2,8 @@
 
 #include "Arduino.h"
 
-const int cLights = 7;
-const int rgLights[cLights] = {2, 3, 5, 7, 9, 11, 13};
+const int cLights = 5;
+const int rgLights[cLights] = {2, 3, 4, 5, 6};
 
 void setup()
 {

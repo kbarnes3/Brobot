@@ -2,13 +2,20 @@
 
 #include "Arduino.h"
 #include "ILightManager.h"
+#include "BrolightManager.h"
 #include "pins.h"
 
 const int c_cLights = 5;
 const int c_rgLights[c_cLights] = { light1, light2, light3, light4, light5 };
 
+BrolightManager g_brolightManager;
+
+ILightManager *g_pCurrentManager = NULL;
+
 void setup()
 {
+    g_pCurrentManager = &g_brolightManager;
+
     for (int i = 0; i < c_cLights; i++)
     {
         pinMode(c_rgLights[i], OUTPUT);
@@ -19,7 +26,11 @@ void setup()
 
 void loop()
 {
-    measureAccel();
+    int strength = 0;
+
+    strength = measureAccel();
+    g_pCurrentManager->ShowLights(strength);
+
 }
 
 int measureAccel()
