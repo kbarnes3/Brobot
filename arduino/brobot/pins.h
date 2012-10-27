@@ -1,4 +1,5 @@
 // Pin assignments
+#pragma once
 
 // int unused = 0;
 // int unused = 1;

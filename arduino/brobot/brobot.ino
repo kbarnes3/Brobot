@@ -1,6 +1,7 @@
 // Brobot 9000 sketch
 
 #include "Arduino.h"
+#include "ILightManager.h"
 #include "pins.h"
 
 const int c_cLights = 5;
