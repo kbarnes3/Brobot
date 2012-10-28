@@ -5,9 +5,6 @@
 #include "BrolightManager.h"
 #include "pins.h"
 
-const int c_cLights = 5;
-const int c_rgLights[c_cLights] = { light1, light2, light3, light4, light5 };
-
 BrolightManager g_brolightManager;
 
 ILightManager *g_pCurrentManager = NULL;
@@ -16,9 +13,9 @@ void setup()
 {
     g_pCurrentManager = &g_brolightManager;
 
-    for (int i = 0; i < c_cLights; i++)
+    for (int i = 0; i < cMaxLights; i++)
     {
-        pinMode(c_rgLights[i], OUTPUT);
+        pinMode(rgLights[i], OUTPUT);
     }
 
     pinMode(pushButton, INPUT);
@@ -67,19 +64,19 @@ int measureAccel()
     }
 
     // Now map minValue to a strength value between 1 and 5 and return that
-    if (minValue <= 50)
+    if (minValue <= 100)
     {
         return 5;
     }
-    else if (minValue <= 100)
+    else if (minValue <= 150)
     {
         return 4;
     }
-    else if (minValue <= 200)
+    else if (minValue <= 250)
     {
         return 3;
     }
-    else if (minValue <= 300)
+    else if (minValue <= 350)
     {
         return 2;
     }
