@@ -3,6 +3,8 @@
 #include "Arduino.h"
 #include "ILightManager.h"
 #include "BrolightManager.h"
+#include "IdleLights.h"
+#include "Timeout.h"
 #include "pins.h"
 
 BrolightManager g_brolightManager;
@@ -19,6 +21,8 @@ void setup()
     }
 
     pinMode(pushButton, INPUT);
+
+    SetupIdleLights();
 }
 
 void loop()
@@ -26,7 +30,8 @@ void loop()
     int strength = 0;
 
     strength = measureAccel();
-    g_pCurrentManager->ShowLights(strength);
+    //g_pCurrentManager->ShowLights(strength);
+    CheckTimers();
 
 }
 
