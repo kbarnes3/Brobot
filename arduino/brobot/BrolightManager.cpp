@@ -19,6 +19,8 @@ namespace BrolightState
 };
 
 BrolightState::Enum s_currentState = BrolightState::Waiting;
+int s_iMaxStrength = 0;
+int s_iCurrentStength = 0;
 
 void BrolightManager::ShowLights(int strength)
 {
@@ -26,6 +28,10 @@ void BrolightManager::ShowLights(int strength)
     {
         return;
     }
+
+    s_currentState = BrolightState::Rising;
+    s_iMaxStength = strength;
+    s_iCurrentStrength = 0;
 }
 
 void BrolightManager::ClearLights()
