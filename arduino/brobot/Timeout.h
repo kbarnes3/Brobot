@@ -13,6 +13,7 @@ namespace TimerId
     };
 };
 
-void CheckTimers();
-void SetTimeout(TimerId::Enum timerId, unsigned long delay, AsyncFunction * function);
+void checkTimers();
+void setTimeout(TimerId::Enum timerId, unsigned long delay, AsyncFunction * function);
+void clearTimeouts();
 

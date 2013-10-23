@@ -1,6 +1,7 @@
 // Brobot 9000 sketch
 
 #include "Arduino.h"
+#include "LightUtils.h"
 #include "ILightManager.h"
 #include "BrolightManager.h"
 #include "IdleLights.h"
@@ -22,7 +23,7 @@ void setup()
 
     pinMode(pushButton, INPUT);
 
-    SetupIdleLights();
+    setupIdleLights();
 }
 
 void loop()
@@ -31,7 +32,7 @@ void loop()
 
     strength = measureAccel();
     //g_pCurrentManager->ShowLights(strength);
-    CheckTimers();
+    checkTimers();
 
 }
 
@@ -54,6 +55,8 @@ int measureAccel()
 
     // Otherwise sample the accelerometer as many times as possible in the next 0.250 seconds
     // and find the minimum
+    clearTimeouts();
+    setLights(rgLights, cMaxLights, HIGH);
     endTick  = currentTick + c_readTime;
     while (currentTick < endTick)
     {
@@ -67,6 +70,7 @@ int measureAccel()
 
         currentTick = millis();
     }
+    setLights(rgLights, cMaxLights, LOW);
 
     // Now map minValue to a strength value between 1 and 5 and return that
     if (minValue <= 100)

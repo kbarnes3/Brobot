@@ -4,28 +4,47 @@
 #include "pins.h"
 
 // Forward declares
-void TurnOnLights();
-void TurnOffLights();
+void stepIdle();
 
-void SetupIdleLights()
+const int s_rgIdleSteps[] = {
+    light1,
+    light2,
+    light3,
+    light4,
+    light5,
+    light4,
+    light3,
+    light2,
+    light1,
+    };
+const int s_cIdleSteps = sizeof(s_rgIdleSteps) / sizeof(s_rgIdleSteps[0]);
+int s_iIdleStep = 0;
+
+void setupIdleLights()
 {
-    SetTimeout(TimerId::Idle, 10000, &TurnOnLights);
+    s_iIdleStep = 0;
+    setTimeout(TimerId::Idle, 5000, &stepIdle);
 }
 
-void TurnOnLights()
+void stepIdle()
 {
-    for (int i = 0; i < cMaxLights; i++)
+    if (s_iIdleStep < s_cIdleSteps)
     {
-        digitalWrite(rgLights[i], HIGH);
+        digitalWrite(s_rgIdleSteps[s_iIdleStep], HIGH);
     }
-    SetTimeout(TimerId::Idle, 1000, &TurnOffLights);
+    if (s_iIdleStep > 0)
+    {
+        digitalWrite(s_rgIdleSteps[s_iIdleStep - 1], LOW);
+    }
+
+    if (s_iIdleStep >= s_cIdleSteps)
+    {
+        setupIdleLights();
+    }
+    else
+    {
+        s_iIdleStep++;
+        setTimeout(TimerId::Idle, 150, &stepIdle);
+    }
 }
 
-void TurnOffLights()
-{
-    for (int i = 0; i < cMaxLights; i++)
-    {
-        digitalWrite(rgLights[i], LOW);
-    }
-    SetTimeout(TimerId::Idle, 10000, &TurnOnLights);
-}
