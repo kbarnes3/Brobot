@@ -2,15 +2,29 @@
 #include "pins.h"
 #include "BrolightManager.h"
 
+namespace BrolightState
+{
+    enum Enum
+    {
+        Waiting = 0,
+        Rising,
+        Blink1,
+        Clear1,
+        Blink2,
+        Clear2,
+        Blink3,
+        Clear3,
+        Max
+    };
+};
+
+BrolightState::Enum s_currentState = BrolightState::Waiting;
+
 void BrolightManager::ShowLights(int strength)
 {
     if ((strength < 1) || (strength > 5))
     {
-        ClearLights();
-    }
-    else
-    {
-        ShowSomeLights(strength);
+        return;
     }
 }
 

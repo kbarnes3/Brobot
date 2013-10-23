@@ -31,7 +31,7 @@ void loop()
     int strength = 0;
 
     strength = measureAccel();
-    //g_pCurrentManager->ShowLights(strength);
+    g_pCurrentManager->ShowLights(strength);
     checkTimers();
 
 }
@@ -40,7 +40,9 @@ int measureAccel()
 {
     int minValue = 1023;
     unsigned long currentTick = 0;
+    unsigned long flashTick = 0;
     unsigned long endTick = 0;
+    const unsigned long c_flashTime = 150; // ms
     const unsigned long c_readTime = 250; // ms
 
     currentTick = millis();
@@ -57,20 +59,11 @@ int measureAccel()
     // and find the minimum
     clearTimeouts();
     setLights(rgLights, cMaxLights, HIGH);
+    flashTick  = currentTick + c_flashTime;
     endTick  = currentTick + c_readTime;
-    while (currentTick < endTick)
-    {
-        int value = 1023;
-
-        value = analogRead(accel);
-        if (value < minValue)
-        {
-            minValue = value;
-        }
-
-        currentTick = millis();
-    }
+    minValue = sampleAccel(minValue, flashTick);
     setLights(rgLights, cMaxLights, LOW);
+    minValue = sampleAccel(minValue, endTick);
 
     // Now map minValue to a strength value between 1 and 5 and return that
     if (minValue <= 100)
@@ -95,3 +88,25 @@ int measureAccel()
     }
 
 }
+
+int sampleAccel(int threshold, unsigned long endTick)
+{
+    int minValue = threshold;
+    unsigned long currentTick = millis();
+
+    while (currentTick < endTick)
+    {
+        int value = 1023;
+
+        value = analogRead(accel);
+        if (value < minValue)
+        {
+            minValue = value;
+        }
+
+        currentTick = millis();
+    }
+
+    return minValue;
+}
+
