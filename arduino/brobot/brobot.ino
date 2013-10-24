@@ -23,7 +23,7 @@ void setup()
 
     pinMode(pushButton, INPUT);
 
-    setupIdleLights();
+    IdleLights::Setup();
 }
 
 void loop()

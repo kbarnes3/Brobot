@@ -34,11 +34,11 @@ void BrolightManager::RisingLights()
 
     if (s_iCurrentStrength < s_iMaxStrength)
     {
-        setTimeout(TimerId::Brolight, 200, &BrolightManager::RisingLights);
+        setTimeout(TimerId::Brolight, 200, &RisingLights);
     }
     else
     {
-        setTimeout(TimerId::Brolight, 500, &BrolightManager::ClearLights);
+        setTimeout(TimerId::Brolight, 500, &ClearLights);
     }
 }
 
@@ -48,11 +48,11 @@ void BrolightManager::ClearLights()
 
     if (s_blinkCount < s_maxBlinkCount)
     {
-        setTimeout(TimerId::Brolight, 400, &BrolightManager::BlinkLights);
+        setTimeout(TimerId::Brolight, 400, &BlinkLights);
     }
     else
     {
-        setupIdleLights();
+        IdleLights::Setup();
     }
 }
 
@@ -67,6 +67,6 @@ void BrolightManager::BlinkLights()
         clearDelay = 1000;
     }
 
-    setTimeout(TimerId::Brolight, clearDelay, &BrolightManager::ClearLights);
+    setTimeout(TimerId::Brolight, clearDelay, &ClearLights);
 }
 

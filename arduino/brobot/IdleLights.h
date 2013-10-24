@@ -1,5 +1,12 @@
 // Functions for idle light activity
 #pragma once
 
-void setupIdleLights();
+class IdleLights
+{
+    public:
+        static void Setup();
+
+    private:
+        static void StepIdle();
+};
 
