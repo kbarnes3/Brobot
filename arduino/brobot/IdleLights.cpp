@@ -23,7 +23,7 @@ int s_iIdleStep = 0;
 void setupIdleLights()
 {
     s_iIdleStep = 0;
-    setTimeout(TimerId::Idle, 5000, &stepIdle);
+    setTimeout(TimerId::Idle, 30000, &stepIdle);
 }
 
 void stepIdle()

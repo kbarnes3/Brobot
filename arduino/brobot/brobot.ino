@@ -42,7 +42,7 @@ int measureAccel()
     unsigned long currentTick = 0;
     unsigned long flashTick = 0;
     unsigned long endTick = 0;
-    const unsigned long c_flashTime = 150; // ms
+    const unsigned long c_flashTime = 100; // ms
     const unsigned long c_readTime = 250; // ms
 
     currentTick = millis();

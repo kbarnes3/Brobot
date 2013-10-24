@@ -8,10 +8,8 @@ class BrolightManager : public ILightManager
         virtual void ShowLights(int strength);
 
     private:
-        void ClearLights();
-        void ShowSomeLights(int strength);
-        void SetLights(int cLights, int value, int msDelay);
-        void BlinkLights(int cLights);
-
+        static void RisingLights();
+        static void ClearLights();
+        static void BlinkLights();
 };
 

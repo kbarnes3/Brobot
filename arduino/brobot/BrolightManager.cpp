@@ -1,26 +1,14 @@
 #include "Arduino.h"
+#include "IdleLights.h"
+#include "LightUtils.h"
+#include "Timeout.h"
 #include "pins.h"
 #include "BrolightManager.h"
 
-namespace BrolightState
-{
-    enum Enum
-    {
-        Waiting = 0,
-        Rising,
-        Blink1,
-        Clear1,
-        Blink2,
-        Clear2,
-        Blink3,
-        Clear3,
-        Max
-    };
-};
-
-BrolightState::Enum s_currentState = BrolightState::Waiting;
 int s_iMaxStrength = 0;
-int s_iCurrentStength = 0;
+int s_iCurrentStrength = 0;
+int s_blinkCount = 0;
+const int s_maxBlinkCount = 3;
 
 void BrolightManager::ShowLights(int strength)
 {
@@ -29,48 +17,56 @@ void BrolightManager::ShowLights(int strength)
         return;
     }
 
-    s_currentState = BrolightState::Rising;
-    s_iMaxStength = strength;
+    s_iMaxStrength = strength;
     s_iCurrentStrength = 0;
+    s_blinkCount = 0;
+
+    clearTimeouts();
+    RisingLights();
+}
+
+void BrolightManager::RisingLights()
+{
+    int newLight = rgLights[s_iCurrentStrength];
+    digitalWrite(newLight, HIGH);
+
+    s_iCurrentStrength++;
+
+    if (s_iCurrentStrength < s_iMaxStrength)
+    {
+        setTimeout(TimerId::Brolight, 200, &BrolightManager::RisingLights);
+    }
+    else
+    {
+        setTimeout(TimerId::Brolight, 500, &BrolightManager::ClearLights);
+    }
 }
 
 void BrolightManager::ClearLights()
 {
-    SetLights(cMaxLights, LOW, 0);
-}
+    setLights(rgLights, s_iMaxStrength, LOW);
 
-void BrolightManager::ShowSomeLights(int strength)
-{
-    SetLights(strength, HIGH, 200);
-
-    delay(500);
-
-    BlinkLights(strength);
-    BlinkLights(strength);
-    BlinkLights(strength);
-
-    delay(1000);
-
-    SetLights(cMaxLights, LOW, 0);
-}
-
-void BrolightManager::SetLights(int cLights, int value, int msDelay)
-{
-    for (int i = 0; i < cLights; i++)
+    if (s_blinkCount < s_maxBlinkCount)
     {
-        digitalWrite(rgLights[i], value);
-        delay(msDelay);
+        setTimeout(TimerId::Brolight, 400, &BrolightManager::BlinkLights);
+    }
+    else
+    {
+        setupIdleLights();
     }
 }
 
-void BrolightManager::BlinkLights(int cLights)
+void BrolightManager::BlinkLights()
 {
-    const int msDelay = 400;
+    unsigned long clearDelay = 400;
+    setLights(rgLights, s_iMaxStrength, HIGH);
+    s_blinkCount++;
 
-    SetLights(cLights, LOW, 0);
-    delay(400);
+    if (s_blinkCount >= s_maxBlinkCount)
+    {
+        clearDelay = 1000;
+    }
 
-    SetLights(cLights, HIGH, 0);
-    delay(400);
+    setTimeout(TimerId::Brolight, clearDelay, &BrolightManager::ClearLights);
 }
 
