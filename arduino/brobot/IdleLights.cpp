@@ -21,7 +21,7 @@ int s_iIdleStep = 0;
 void IdleLights::Setup()
 {
     s_iIdleStep = 0;
-    setTimeout(TimerId::Idle, 30000, &StepIdle);
+    setTimeout(TimerId::Idle, 10000, &StepIdle);
 }
 
 void IdleLights::StepIdle()

@@ -40,7 +40,6 @@ int measureAccel()
 {
     int minValue = 1023;
     unsigned long currentTick = 0;
-    unsigned long flashTick = 0;
     unsigned long endTick = 0;
     const unsigned long c_flashTime = 100; // ms
     const unsigned long c_readTime = 250; // ms
@@ -58,11 +57,8 @@ int measureAccel()
     // Otherwise sample the accelerometer as many times as possible in the next 0.250 seconds
     // and find the minimum
     clearTimeouts();
-    setLights(rgLights, cMaxLights, HIGH);
-    flashTick  = currentTick + c_flashTime;
-    endTick  = currentTick + c_readTime;
-    minValue = sampleAccel(minValue, flashTick);
     setLights(rgLights, cMaxLights, LOW);
+    endTick  = currentTick + c_readTime;
     minValue = sampleAccel(minValue, endTick);
 
     // Now map minValue to a strength value between 1 and 5 and return that
