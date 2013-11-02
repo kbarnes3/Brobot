@@ -47,9 +47,9 @@ int measureAccel()
     currentTick = millis();
     minValue = analogRead(accel);
 
-    // If the minValue is > 400 (512 is roughly 0 g),
+    // If the minValue is > 350 (512 is roughly 0 g),
     // return immediately as nothing interesting is happening
-    if (minValue > 400)
+    if (minValue > 350)
     {
         return 0;
     }
@@ -62,23 +62,23 @@ int measureAccel()
     minValue = sampleAccel(minValue, endTick);
 
     // Now map minValue to a strength value between 1 and 5 and return that
-    if (minValue <= 100)
+    if (minValue <= 0)
     {
         return 5;
     }
-    else if (minValue <= 150)
+    else if (minValue <= 50)
     {
         return 4;
     }
-    else if (minValue <= 250)
+    else if (minValue <= 150)
     {
         return 3;
     }
-    else if (minValue <= 350)
+    else if (minValue <= 250)
     {
         return 2;
     }
-    else //if (minValue <= 400)
+    else //if (minValue <= 350)
     {
         return 1;
     }
